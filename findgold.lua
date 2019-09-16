@@ -32,7 +32,6 @@ local trucky=0
 
 local current_level
 local level_number
-local last_level
 
 local goal_bags=17
 
@@ -145,14 +144,6 @@ end
 --screen shake intensity to x
 local function shake(x)
 	if(x>_shake) _shake = x
-end
-
---hex debugging
-hexlut = {"1","2","3","4",
-		"5","6","7","8","9","a","b",
-		"c","d","e","f",[0]="0"}
-local function hex(num)
-	return hexlut[band(shr(num,12),0xf)]..hexlut[band(shr(num,8),0xf)]..hexlut[band(shr(num,4),0xf)]..hexlut[band(num,0xf)].."."..hexlut[band(shl(num,4),0xf)]..hexlut[band(shl(num,8),0xf)]..hexlut[band(shl(num,12),0xf)]..hexlut[band(shl(num,16),0xf)]
 end
 
 --director api
@@ -1487,9 +1478,6 @@ function exit_level()
 
 		player_enter_truck()
 		truck_exit()
-
-		--dont think this is used
-		last_level=current_level
 
 		if current_level!=level_data.home then
 			music(3)

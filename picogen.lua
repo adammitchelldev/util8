@@ -1,0 +1,11 @@
+-- load given p8 file, either input stream or open given filename
+-- find the lua section
+-- ignore anything within the --deps --end section
+-- go through code:
+--  extrapolate includes
+--  find --require %s
+--   load the required file
+--   do the same within the file
+--  make sure no cyclic deps (requires some thinking)
+-- generate deps list
+-- replace deps in the --deps section

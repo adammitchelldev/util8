@@ -1,0 +1,7 @@
+lua program to generate includes
+
+should first extrapolate the "main" source files from the p8 file
+
+should use comments in the source files to calculate deps of the main files
+
+then place the deps includes in the correct order in a deps section

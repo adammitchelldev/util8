@@ -3,6 +3,8 @@ version 18
 __lua__
 --find gold is a ludum dare 40 game
 --the aim of the game is the title!
+#include hex.lua
+
 #include findgold.lua
 
 __gfx__
