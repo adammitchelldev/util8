@@ -24,6 +24,19 @@ local camy=0
 local camtx=0
 local camty=0
 
+--positional sfx
+--(dont play if not on the screen)
+local function psfx(id,x,y)
+	local sx=x*8
+	local sy=y*8
+	if sx>=camx
+			and sx<=camx+128
+			and sy>=camy
+			and sy<=camy+96 then
+		sfx(id)
+	end
+end
+
 local truckx=1
 local trucky=0
 
@@ -97,18 +110,6 @@ level_data.world={
 	enter=t_world_enter
 }
 
---positional sfx
-local function psfx(id,x,y)
-	local sx=x*8
-	local sy=y*8
-	if sx>=camx
-			and sx<=camx+128
-			and sy>=camy
-			and sy<=camy+96 then
-		sfx(id)
-	end
-end
-
 --make and return a new layer
 local function new_layer()
   local layer = {}
@@ -125,47 +126,6 @@ end
 --remove an object from its layer
 local function destroy(obj)
 	del(obj.layer,obj)
-end
-
---director api
-local _active_scenes={}
-
-local function scene_update()
-  for scene in all(_active_scenes) do
-  	assert(coresume(scene))
-  end
-end
-
---begin the scene and start it this frame
-local function begin_scene(script)
-  local scene
-  scene=cocreate(function()
-    script()
-    del(_active_scenes,scene)
-  end)
-  add(_active_scenes,scene)
-  assert(coresume(scene))
-end
-
---run scripts simultaneously
-local function multitask(scripts)
- local tasks={}
- for script in all(scripts) do
-   add(tasks,cocreate(script))
- end
- repeat
-		local complete = true
-		for task in all(tasks) do
-			if coresume(task) then
-			 complete = false
-			end
-		end
-  if complete then
-    return
-  else
-    yield()
-  end
-	until false
 end
 
 --collision

@@ -7,6 +7,7 @@ __lua__
 #include engine/fx/delay.lua
 #include engine/fx/light.lua
 #include engine/fx/shake.lua
+#include engine/director.lua
 
 #include findgold.lua
 
