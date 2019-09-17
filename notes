@@ -1,7 +1,24 @@
 lua program to generate includes
 
-should first extrapolate the "main" source files from the p8 file
+Game Ideas
+==========
 
-should use comments in the source files to calculate deps of the main files
+Stack height limit for corpses, the bottom corpse is crushed.
 
-then place the deps includes in the correct order in a deps section
+Enemy Ideas
+-----------
+* Enemies that can carry and throw items!
+	- Enemies that can carry and throw other enemies.
+	- Enemies that don't move
+	- Enemies that stack to reach player?
+* Slow enemies
+* Snake enemies (traditional retro snake? snake boss?)
+* Enemies that take multiple hits
+* Enemies with helmets, can't be killed by falling
+
+Item Ideas
+----------
+* Shotgun: jump on it to shoot
+* Jetpack: adds a double jump/adds held thrust
+* Pogo: bounce all the time, but able to bounce higher (??)
+*

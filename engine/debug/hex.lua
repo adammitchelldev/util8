@@ -16,6 +16,6 @@ local function hexdec(num)
 end
 
 local function hex(num)
-	--return hexint(num).."."..hexlut[band(shl(num,4),0xf)]..hexlut[band(shl(num,8),0xf)]..hexlut[band(shl(num,12),0xf)]..hexlut[band(shl(num,16),0xf)]
+	--return _hex_lut[band(shr(num,12),0xf)].._hex_lut[band(shr(num,8),0xf)].._hex_lut[band(shr(num,4),0xf)].._hex_lut[band(shr(num,0),0xf)].."."..hexlut[band(shl(num,4),0xf)]..hexlut[band(shl(num,8),0xf)]..hexlut[band(shl(num,12),0xf)]..hexlut[band(shl(num,16),0xf)]
 	return hexint(num).."."..hexdec(num)
 end

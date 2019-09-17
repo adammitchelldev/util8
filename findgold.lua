@@ -3,9 +3,6 @@ local level=0
 local levelh=0
 local layers = {}
 local gravity = 0x0.04
-local _delay = 0
-local _light = 0
-local _shakedir, _shake = 0,0
 
 --game stuff
 local player
@@ -14,7 +11,7 @@ local bags,triggers
 local truck={}
 local home={}
 
-deaths=0
+local deaths=0
 
 local splash=true
 
@@ -128,22 +125,6 @@ end
 --remove an object from its layer
 local function destroy(obj)
 	del(obj.layer,obj)
-end
-
---add x frames of delay
-local function delay(x)
-	--if(x>_delay) _delay = x
-	_delay += x
-end
-
---flash ligh to x
-local function light(x)
-	if(x>_light) _light = x
-end
-
---screen shake intensity to x
-local function shake(x)
-	if(x>_shake) _shake = x
 end
 
 --director api
@@ -1618,15 +1599,9 @@ function _update60()
   scene_update()
 
 	if not splash then
-	if _delay>0 then
-		_delay-=1
-	else
-    if _light>0 then
-     _light-=1
-    end
-    if _shake>0 then
-     _shake-=1
-    end
+	if delay_update() then
+		light_update()
+    shake_update()
 		for layer in all(layers) do
 			update(layer)
 		end
@@ -1745,39 +1720,14 @@ function _draw()
  end
 
 
- --level
+	--level
 	clip(0,16,128,96)
 
- --shake
- local acamx=camx
- local acamy=camy-0x10
+	--shake
+	acamx,acamy=shake_camera(camx,camy)
 
-	if _shake > 0 then
-		local i = flr(rnd(4))
-		if(i==_shakedir) i=(i+2)%4
-
-		local dx,dy = _shake*(i%2),_shake*((i+1)%2)
-		if(i>1) dx,dy=-dx,-dy
-		acamx+=dx
-		acamy+=dy
-		_shakedir = i
-	end
-
-	camera(acamx,acamy)
-
- --light
-	if _light > 0 then
-		local i = (flr(_light+0.5)-1) * 0x0100
-		if(i>0x0100) i = 0x0100
-		memcpy(0x5f10,0x0e38+i,4)
-		memcpy(0x5f14,0x0e78+i,4)
-		memcpy(0x5f18,0x0eb8+i,4)
-		memcpy(0x5f1c,0x0ef8+i,4)
-	else
-		pal()
-	end
-
-
+	--light
+	light_pal()
 
   --draw layers
   for i=0,levelh-1 do
