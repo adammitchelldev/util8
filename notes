@@ -4,10 +4,58 @@ TODO
 extract object/layer manipulation
 extract scene director
 
+Big Features
+============
+
+Weight system, items weigh and stack as expected
+
+Stacked items move with each other, player can stack items and carry them
+
+new controls:
+- jump can be either up or Z (freeing up a button for new controls)
+- game initially allows both up and Z, and then decides which one the user prefers before the user needs the new button
+- X = pick up, throw
+- Up + X = pick up, stack up
+- Down = hold box in front of you
+- Down + X = place box, throw box below you
+- Z in air holding box = jump off of lowest box you are holding
+- Hold Z whilst standing still = open inventory
+
+
 Game Ideas
 ==========
 
 Stack height limit for corpses, the bottom corpse is crushed.
+
+Character strength, improves the total weight of items player can carry.
+As player carries more boxes, he becomes slower and jumps less far:
+~1 box over limit, acceleration is slowed, can't jump as high.
+~2 boxes over limit, character is hunched and starts sweating, can't jump.
+~3 boxes over limit, character cannot move and cues indicate he is about to be crushed unless he drops or throws something.
+
+When box lands on player, it will not necessarily damage him unless the inertia was too high (such as for a large stack)
+Player strength improves the player's resilience to being crushed.
+
+Light items are 1, medium items are 2 (boxes) and heavy items are 3 (gold)
+
+Player strength is upgraded through meat? As a reward for rescuing some villagers?
+
+Checkpoints: there are checkpoints in the level that the player can respawn at. The player can teleport between selected checkpoints.
+Checkpoints also serve to "bank" gold: when gold passes through a checkpoint, if it is destroyed, it will respawn at that checkpoint. Leaving the level has the same effect.
+
+The player comes from a village. Village improvement is a large part of the game and story:
+* The player can rescue villagers from the levels. Each villager is rescued in a unique way and brings unique effects to the village.
+  - Old man needs to be carried, in the village he turns into the wise man who will give hints and advice, also enables the selection of hard mode ("back in my day")
+	- Monkey follows the bananas, when he is taken to the village, he unlocks the shop
+	- Strong man cannot jump, he must climb on a large pile of items? Unlocks truck upgrades? Items?
+	- Warrior must be beaten and killed in combat, cannot be saved.
+	- Dog follows the player after being tamed/fed. Can follow the player around for the rest of the game.
+	- "princess" is afraid of monsters but otherwise follows the player, so long as he has gold. (maybe she keeps changing her mind about what she wants just to be frustrating) Unlocks village decoration?
+	- Inventor saves themself with the jetpack when the player gets the ingredients to them. Unlocks the inventors shop which can upgrade items.
+
+The villagers help unload the truck of gold.
+
+Player can carry a few items. These items may reduce carrying weight capacity? Unequiping the items allows the player to carry more, at the cost of not having helpful items.
 
 Enemy Ideas
 -----------
