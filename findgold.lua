@@ -1,4 +1,4 @@
-﻿--api
+--api
 local level=0
 local levelh=0
 local layers = {}
@@ -162,18 +162,18 @@ local function collide(
 			x = tl + 1 - l
 		end
 	elseif v > 0 then --right
-  local tr = x+r
-  local trf = flr(tr)
-  if trf ~= tr then
-   tr = trf
-  else
-   tr = trf - 1
-  end
+		local tr = x+r
+		local trf = flr(tr)
+		if trf ~= tr then
+			tr = trf
+		else
+			tr = trf - 1
+		end
 		while tu < td do
 			--spr(3,tr*8,i*8)
 			local spriten=m(tr, tu)
 			hit=bor(fget(spriten),hit)
-   tu += 1
+			tu += 1
 		end
 		if band(hit,0x1)!=0 then
 			x = tr - r -- 0x0.2
@@ -202,93 +202,93 @@ local function movey(o,v)
 end
 
 local function physics(o)
-  local v=o.vel
-  v.ox=x
-  if o.gravity then
-    v.y+=gravity
-    --x axis friction
-  end
-  if o.grounded then
-  	if o.frict then
-   	v.x*=o.frict
-   	if(abs(v.x)<0x0.04) v.x=0
-   end
-  elseif o.airfrict then
-  	v.x*=o.airfrict
-  	if(abs(v.x)<0x0.04) v.x=0
-  end
-  if o.coll then
-    if (v.x<-0x0.8) v.y=-0x0.8
-    if (v.x>0x0.8) v.y=0x0.8
-    if (v.y<-0x0.8) v.y=-0x0.8
-    if (v.y>0x0.8) v.y=0x0.8
-    local hitx,hity
+	local v=o.vel
+	v.ox=x
+	if o.gravity then
+		v.y+=gravity
+		--x axis friction
+	end
+	if o.grounded then
+		if o.frict then
+			v.x*=o.frict
+			if(abs(v.x)<0x0.04) v.x=0
+		end
+	elseif o.airfrict then
+		v.x*=o.airfrict
+		if(abs(v.x)<0x0.04) v.x=0
+	end
+	if o.coll then
+		if (v.x<-0x0.8) v.y=-0x0.8
+		if (v.x>0x0.8) v.y=0x0.8
+		if (v.y<-0x0.8) v.y=-0x0.8
+		if (v.y>0x0.8) v.y=0x0.8
+		local hitx,hity
 
-    --when holding, have to
-    --check old body for
-    --hurt independently
-    if o.hurt and o.holding then
-    	local temp=o.coll
-    	local ox=o.x
-    	o.coll=o.old_coll
-    	hitx=movex(o)
-    	o.x=ox
-    	o.coll=temp
-    	if band(hitx,0x4)!=0 then
-    		o:hurt()
-    	end
-    end
+		--when holding, have to
+		--check old body for
+		--hurt independently
+		if o.hurt and o.holding then
+			local temp=o.coll
+			local ox=o.x
+			o.coll=o.old_coll
+			hitx=movex(o)
+			o.x=ox
+			o.coll=temp
+			if band(hitx,0x4)!=0 then
+				o:hurt()
+			end
+		end
 
-    hitx,o.x=movex(o)
-    o.walled=(band(hitx,0x1)!=0)
-    if o.walled then
-     v.x=0
-    end
-    if (not o.holding) then
-     if o.kill and band(hitx,0x10)!=0 then
-    		o:kill()
-    	elseif o.hurt and band(hitx,0x4)!=0 then
-    		o:hurt()
-    	end
-    end
-   	if band(hitx,0x8)!=0 then
-    	v.x*=0x0.8
-    end
-    hity,o.y=movey(o)
-    local ovy = v.y
-    if band(hity,0x1)!=0 then
-    	--bounce?
-    	if v.y>0 and band(hity,0x2)==0x2 then
-    		v.y=-0x0.5d
-    		hity=nil
-    		psfx(9,o.x,o.y)
-    	else
-     	if o.dropsfx
-     			and not o.grounded
-     			and v.y>0x0.2 then
-     		psfx(o.dropsfx,o.x,o.y)
-     		if(o.heavy) shake(flr(v.y*4))
-     	end
-     	v.y=0
-     end
-    end
-				if (not o.holding) or ovy>0 then
-   		if o.kill and band(hity,0x10)!=0 then
-    		o:kill()
-    	elseif o.hurt and band(hity,0x4)!=0 then
-    		o:hurt()
-    	end
-   	end
-    o.grounded=(band(hity,0x1)!=0)
-    if band(hity,0x8)!=0 then
-    	v.y*=0x0.8
-    	o.grounded=true
-    end
-    o.standing=nil
-  else
-   o.x+=v.x
-   o.y+=v.y
-  end
+		hitx,o.x=movex(o)
+		o.walled=(band(hitx,0x1)!=0)
+		if o.walled then
+		 v.x=0
+		end
+		if (not o.holding) then
+			if o.kill and band(hitx,0x10)!=0 then
+				o:kill()
+			elseif o.hurt and band(hitx,0x4)!=0 then
+				o:hurt()
+			end
+		end
+		if band(hitx,0x8)!=0 then
+			v.x*=0x0.8
+		end
+		hity,o.y=movey(o)
+		local ovy = v.y
+		if band(hity,0x1)!=0 then
+			--bounce?
+			if v.y>0 and band(hity,0x2)==0x2 then
+				v.y=-0x0.5d
+				hity=nil
+				psfx(9,o.x,o.y)
+			else
+				if o.dropsfx
+						and not o.grounded
+						and v.y>0x0.2 then
+					psfx(o.dropsfx,o.x,o.y)
+					if(o.heavy) shake(flr(v.y*4))
+				end
+				v.y=0
+			end
+		end
+		if (not o.holding) or ovy>0 then
+			if o.kill and band(hity,0x10)!=0 then
+				o:kill()
+			elseif o.hurt and band(hity,0x4)!=0 then
+				o:hurt()
+			end
+		end
+		o.grounded=(band(hity,0x1)!=0)
+		if band(hity,0x8)!=0 then
+			v.y*=0x0.8
+			o.grounded=true
+		end
+		o.standing=nil
+	else
+		o.x+=v.x
+		o.y+=v.y
+	end
 end
 
 local function aabb_intersect(o1,o2)
@@ -310,46 +310,6 @@ local function for_collisions(l1,l2,f)
 		end
 	end
 end
-
---level
---this spawnlist gets populated
---later
-spawnlist = {}
-local function spawn(c,x,y)
-	--look into the spawnlist
- local f=spawnlist[c]
- --if we found something
- --then it's our spawn function
-	if f then
-		local o=f() --call it!
-		if o then
-			o.x,o.y = x,y --set the pos
-			o.respawn={
-				x=x,
-				y=y
-			}
-		end
-		return o --return it
-	end
-end
-
---temp, should decode
---[[
-local function loadlevel(n)
-	local lx=((n%8)*16)
-	local ly=flr(n/8)*16
-	for x=0,16 do
-		for y=0,14 do
-			local c=mget(lx+x,ly+y)
-			if spawn(c,x,y) then
-				mset(x,y,0)
-			else
-				mset(x,y,c)
-			end
-		end
-	end
-end
-]]
 
 local function contains(list,item)
 	for oth in all(list) do
@@ -379,14 +339,12 @@ local function loadlevel(l)
 
 	layers={}
 	texts=new_layer()
- enemies=new_layer()
+	enemies=new_layer()
 	pickups=new_layer()
 	triggers=new_layer()
 	bags=new_layer()
- players=new_layer()
+	players=new_layer()
 	bullets=new_layer()
-
-
 
 	current_level=l
 	level=l.index
@@ -396,7 +354,7 @@ local function loadlevel(l)
 	--for every "room"
 	for r=0,levelh-1 do
 		local ly=((level+r)%5)*12
- 	local lx=flr((level+r)/5)*16
+		local lx=flr((level+r)/5)*16
 
 		--every cell in that room
 		for y=0,11 do
@@ -429,31 +387,19 @@ local function loadlevel(l)
 	end
 end
 
-local function update(layer)
-	for o in all(layer) do
-		if(o.update) o:update()
-	end
-end
-
-local function draw(layer)
-	for o in all(layer) do
-		if(o.draw) o:draw()
-	end
-end
-
 local function sprite_draw(obj)
 	local s = obj.sprite
- if not s.hide then
- 	spr(s.n,
- 			(obj.x*8)+0x0.8,
- 			(obj.y*8)+0x0.8,
- 			s.w or 1,s.h or 1,s.fx,s.fy)
- end
- if	obj.gold_id then
- 	color(9)
-  print(obj.gold_id,
-  (obj.x*8)+0x3.8,
-  (obj.y*8)+0x2.8)
+	if not s.hide then
+		spr(s.n,
+				(obj.x*8)+0x0.8,
+				(obj.y*8)+0x0.8,
+				s.w or 1,s.h or 1,s.fx,s.fy)
+	end
+	if obj.gold_id then
+		color(9)
+		print(obj.gold_id,
+		(obj.x*8)+0x3.8,
+		(obj.y*8)+0x2.8)
 	end
 end
 --api end
@@ -516,13 +462,13 @@ local function player_input(obj)
 				and obj.grounded then
 			vel.y = -0x0.44
 			obj.jump = true
-      sfx(3)
+			sfx(3)
 		end
 	else
 		if obj.jump and vel.y > -0x0.34 then
- 		obj.jump = false
- 		if(vel.y<0) vel.y = 0
- 	end
+		obj.jump = false
+		if(vel.y<0) vel.y = 0
+	end
 	end
 
 	if btn(3) and vel.y<-0x0.30 then
@@ -531,11 +477,11 @@ local function player_input(obj)
 	end
 
 	--run ani
- if obj.grounded then
-   obj.sprite.n+=abs(obj.oldx-flr(obj.x*8))/4
-   if(obj.sprite.n>=69) obj.sprite.n-=4
- end
- obj.oldx=flr(obj.x*8)
+	if obj.grounded then
+		obj.sprite.n+=abs(obj.oldx-flr(obj.x*8))/4
+		if(obj.sprite.n>=69) obj.sprite.n-=4
+	end
+	obj.oldx=flr(obj.x*8)
 
 	--pickup bags
 	--look for nearest bag
@@ -547,48 +493,48 @@ local function player_input(obj)
 				local grabbox={
 					x=obj.x,
 					y=obj.y,
-   		coll={
-   			u=0x0.2,
-   			d=0x1.6,
-   			l=0x0.2,
-   			r=0x0.e
-   		}
-   	}
-   	local hity=obj.y+obj.coll.u
-   	local hitx=obj.x+((obj.coll.l+obj.coll.r)/2)
-   	local hitxl=obj.x+obj.coll.l
-   	local hitxr=obj.x+obj.coll.r
-  		local fail=false
-  		for bag in all(bags) do
-  			if aabb_intersect(grabbox,bag) then
-  				local topy=hity+bag.coll.u-bag.coll.d
-  				if not fget(mget(hitx,topy),0) then
-   				player_hold(obj,bag)
-   				fail=false
-   				break
-   			else
-   				local boty=flr(topy+1)-bag.coll.u+bag.coll.d-obj.coll.u+obj.coll.d
-   				--number_of_bags=hitxr--debug
-   				if not fget(mget(hitxl,boty),0) and not fget(mget(hitxr,boty),0) then
-   					obj.y=boty-obj.coll.d
-   					player_hold(obj,bag)
-   					fail=false
-   					break
-   				else
-   					fail=true
-   				end
-   			end
-  			end
-  		end
-  		--if(fail) sfx(11)
-  	else
-  		--throw
-  		player_throw(obj)
-  	end
-  end
- else
- 	obj.held5=nil
- end
+					coll={
+						u=0x0.2,
+						d=0x1.6,
+						l=0x0.2,
+						r=0x0.e
+					}
+				}
+				local hity=obj.y+obj.coll.u
+				local hitx=obj.x+((obj.coll.l+obj.coll.r)/2)
+				local hitxl=obj.x+obj.coll.l
+				local hitxr=obj.x+obj.coll.r
+				local fail=false
+				for bag in all(bags) do
+					if aabb_intersect(grabbox,bag) then
+						local topy=hity+bag.coll.u-bag.coll.d
+						if not fget(mget(hitx,topy),0) then
+							player_hold(obj,bag)
+							fail=false
+							break
+						else
+							local boty=flr(topy+1)-bag.coll.u+bag.coll.d-obj.coll.u+obj.coll.d
+							--number_of_bags=hitxr--debug
+							if not fget(mget(hitxl,boty),0) and not fget(mget(hitxr,boty),0) then
+								obj.y=boty-obj.coll.d
+								player_hold(obj,bag)
+								fail=false
+								break
+							else
+								fail=true
+							end
+						end
+					end
+				end
+				--if(fail) sfx(11)
+			else
+				--throw
+				player_throw(obj)
+			end
+		end
+	else
+		obj.held5=nil
+	end
 
 	if obj.holding then
 		obj.holding.x=obj.x
@@ -605,20 +551,20 @@ local function player_draw(obj)
 end
 
 local function pdeath_update(obj)
-  physics(obj)
-  delay(2)
-  if obj.y>14 then
-    run()
-  end
+	physics(obj)
+	delay(2)
+	if obj.y>14 then
+		run()
+	end
 end
 
 local function iframes(obj)
-  if obj.iframes > 0 then
-    obj.iframes-=1
-    obj.sprite.hide=(obj.iframes%4)>1
-  else
-    obj.sprite.hide=nil
-  end
+	if obj.iframes > 0 then
+		obj.iframes-=1
+		obj.sprite.hide=(obj.iframes%4)>1
+	else
+		obj.sprite.hide=nil
+	end
 end
 
 local function player_update(obj)
@@ -633,9 +579,9 @@ end
 
 local function new_player()
 	local player={
-  gravity=true,
-  frict=0x0.c,
-  airfrict=0x0.c,
+		gravity=true,
+		frict=0x0.c,
+		airfrict=0x0.c,
 		x=5,y=4,
 		vel={
 			x=0,y=0
@@ -652,13 +598,13 @@ local function new_player()
 			fy=false,
 		},
 		gun={
-      wait=0,
-      speed=16
-    },
-  health=3,
-  iframes=0,
-  stun=0,
-  dropsfx=8,
+			wait=0,
+			speed=16
+		},
+		health=3,
+		iframes=0,
+		stun=0,
+		dropsfx=8,
 		update=player_update,
 		input=player_input,
 		draw=player_draw,
@@ -673,70 +619,68 @@ local new_bag
 
 local function make_into_bag(obj)
 	destroy(obj)
- --local bag=new_bag()
- local temp=1-obj.coll.d
- obj.coll.d=1-obj.coll.u
- obj.coll.u=temp
- obj.sprite.n+=32
- obj.sprite.hide=nil
- obj.dropsfx=8
- obj.frict=0x0.e
- obj.airfrict=nil
- obj.update=physics
- obj.draw=sprite_draw
- obj.hurt=nil
- obj.kill=kill_corpse
- obj.notthrown=true
- create(obj,bags)
+	--local bag=new_bag()
+	local temp=1-obj.coll.d
+	obj.coll.d=1-obj.coll.u
+	obj.coll.u=temp
+	obj.sprite.n+=32
+	obj.sprite.hide=nil
+	obj.dropsfx=8
+	obj.frict=0x0.e
+	obj.airfrict=nil
+	obj.update=physics
+	obj.draw=sprite_draw
+	obj.hurt=nil
+	obj.kill=kill_corpse
+	obj.notthrown=true
+	create(obj,bags)
 end
 
 function player_die(obj)
- --obj.update=pdeath_update
- --obj.update=nil
- --obj.coll=nil
- obj.sprite.fy=true
- --music(-1,50)
- sfx(4)
- shake(6)
- light(1)
- delay(5)
- deaths+=1
+	--obj.update=pdeath_update
+	--obj.update=nil
+	--obj.coll=nil
+	obj.sprite.fy=true
+	--music(-1,50)
+	sfx(4)
+	shake(6)
+	light(1)
+	delay(5)
+	deaths+=1
 
- make_into_bag(obj)
+	make_into_bag(obj)
 
- --begin_scene(death_box)
- begin_scene(delay_spawn_player)
- --player=new_player()
-
-
+	--begin_scene(death_box)
+	begin_scene(delay_spawn_player)
+	--player=new_player()
 end
 
 function player_hit(player,enemy,amount,kill)
- if (player.iframes>0) return
- if enemy then
-  player.vel.x=(player.x-enemy.x)*(rnd(0x0.2)+0x0.3)
- end
- player.vel.y=-rnd(0x0.2)-0x0.1
- player.jump=true
- player.stun=15
+	if (player.iframes>0) return
+	if enemy then
+		player.vel.x=(player.x-enemy.x)*(rnd(0x0.2)+0x0.3)
+	end
+	player.vel.y=-rnd(0x0.2)-0x0.1
+	player.jump=true
+	player.stun=15
 
 	if kill then
 		player.health=0
 	else
 		--hack fix
- 	player.health-=1
- end
+		player.health-=1
+	end
 
- if player.holding then
- 	player_throw(player)
- end
+	if player.holding then
+		player_throw(player)
+	end
 
- if player.health<=0 then
-  player_die(player)
- else
-  player.iframes=60
-  sfx(5)
- end
+	if player.health<=0 then
+		player_die(player)
+	else
+		player.iframes=60
+		sfx(5)
+	end
 end
 
 function player_kill()
@@ -763,35 +707,35 @@ end
 --other
 --enemies
 local function edeath_update(obj)
-  physics(obj)
-  if obj.y>14 then
-    destroy(obj)
-  end
+	physics(obj)
+	if obj.y>14 then
+		destroy(obj)
+	end
 end
 
 local function enemy_die(obj,vel)
- if vel then
- 	obj.vel.x=vel.x*(rnd(0x0.2)+0x0.3)
- end
- obj.vel.y=-rnd(0x0.2)-0x0.1
- --obj.update=edeath_update
- --obj.coll=nil
- obj.sprite.fy=true
- delay(3)
- psfx(2,obj.x,obj.y)
+	if vel then
+		obj.vel.x=vel.x*(rnd(0x0.2)+0x0.3)
+	end
+	obj.vel.y=-rnd(0x0.2)-0x0.1
+	--obj.update=edeath_update
+	--obj.coll=nil
+	obj.sprite.fy=true
+	delay(3)
+	psfx(2,obj.x,obj.y)
 
- make_into_bag(obj)
+	make_into_bag(obj)
 end
 
 local function enemy_update(obj)
- if obj.sprite.fx then
-  obj.vel.x-=obj.speed
- else
-  obj.vel.x+=obj.speed
- end
+	if obj.sprite.fx then
+		obj.vel.x-=obj.speed
+	else
+		obj.vel.x+=obj.speed
+	end
 	physics(obj)
- if obj.walled then
-   obj.sprite.fx = not obj.sprite.fx
+	if obj.walled then
+		obj.sprite.fx = not obj.sprite.fx
 	end
 end
 
@@ -802,11 +746,11 @@ end
 
 local function new_enemy()
 	local enemy={
-  gravity=true,
-  speed=0x0.08,
-  frict=0x0.c,
-  airfrict=0x0.c,
-  --speed=0x0.10,
+		gravity=true,
+		speed=0x0.08,
+		frict=0x0.c,
+		airfrict=0x0.c,
+		--speed=0x0.10,
 		vel={
 			x=0,
 			y=0
@@ -855,8 +799,8 @@ end
 local function bullet_update(obj)
 	physics(obj)
 	if obj.walled then
-    bullet_impact(obj)
-  end
+		bullet_impact(obj)
+	end
 end
 
 local function bflash_update(obj)
@@ -869,39 +813,39 @@ local function bflash_update(obj)
 end
 
 function new_bullet()
-  local bullet = {
-    coll = {
-    	l = 0x0.6,--0x0.2
-    	r = 0x0.a,--0x0.e
-    	u = 0x0.6,--0x0.6
-    	d = 0x0.a --0x0.a
-    },
-    sprite = {
-    	n = 81,
-    	w = 1,
-    	h = 1
-    },
-    flash = 2,
-    draw = sprite_draw,
-    update = bflash_update
-  }
-  create(bullet,bullets)
-  return bullet
+	local bullet = {
+		coll = {
+			l = 0x0.6,--0x0.2
+			r = 0x0.a,--0x0.e
+			u = 0x0.6,--0x0.6
+			d = 0x0.a --0x0.a
+		},
+		sprite = {
+			n = 81,
+			w = 1,
+			h = 1
+		},
+		flash = 2,
+		draw = sprite_draw,
+		update = bflash_update
+	}
+	create(bullet,bullets)
+	return bullet
 end
 
 --crate
 local function pickup_text(obj,text)
-  begin_scene(rising_box(text,(obj.x*8)+4,(obj.y*8)-2))
+	begin_scene(rising_box(text,(obj.x*8)+4,(obj.y*8)-2))
 end
 
 local function crate_picked_up(crate,player)
 	if(player.gun.speed>0) player.gun.speed-=2
-  pickup_text(crate,"+1 gun")
+	pickup_text(crate,"+1 gun")
 end
 
 local function health_picked_up(crate,player)
 	player.health+=1
-  pickup_text(crate,"+1 h")
+	pickup_text(crate,"+1 h")
 end
 
 local function new_pickup(sprite_n,picked_up)
@@ -923,12 +867,12 @@ local function new_pickup(sprite_n,picked_up)
 end
 
 local function new_gun_crate()
-  return new_pickup(70,crate_picked_up)
+	return new_pickup(70,crate_picked_up)
 end
 spawnlist[70] = new_gun_crate
 
 local function new_health_crate()
-  return new_pickup(70,health_picked_up)
+	return new_pickup(70,health_picked_up)
 end
 spawnlist[71] = new_health_crate
 
@@ -949,64 +893,64 @@ end
 
 function new_bag()
 	local bag = {
-			vel={
-				x=0,
-				y=0
-			},
-   coll={
- 			l=0x0.2,
- 			r=0x0.e,
- 			u=0x0.0,
- 			d=0x1.0
- 		},
-   sprite = {
-   	n = 72,
-   	w = 1,
-   	h = 1
-   },
-   heavy=true,
-   gravity=true,
-   frict=0x0.e,
-   dropsfx=6,
-   draw = sprite_draw,
-   update = physics,
-   kill = kill_bag,
-   gold_id=level_gold
- }
- create(bag,bags)
- level_gold+=1
- return bag
+		vel={
+			x=0,
+			y=0
+		},
+		coll={
+			l=0x0.2,
+			r=0x0.e,
+			u=0x0.0,
+			d=0x1.0
+		},
+		sprite = {
+			n = 72,
+			w = 1,
+			h = 1
+		},
+		heavy=true,
+		gravity=true,
+		frict=0x0.e,
+		dropsfx=6,
+		draw = sprite_draw,
+		update = physics,
+		kill = kill_bag,
+		gold_id=level_gold
+	}
+	create(bag,bags)
+	level_gold+=1
+	return bag
 end
 
 spawnlist[72] = new_bag
 
 function new_box()
 	local box = {
-			vel={
-				x=0,
-				y=0
-			},
-   coll={
- 			l=0x0.2,
- 			r=0x0.e,
- 			u=0x0.0,
- 			d=0x1.0
- 		},
-   sprite = {
-   	n = 75,
-   	w = 1,
-   	h = 1
-   },
-   heavy=true,
-   gravity=true,
-   frict=0x0.e,
-   dropsfx=7,
-   draw = sprite_draw,
-   update = physics,
-   kill = kill_box
- }
- create(box,bags)
- return box
+		vel={
+			x=0,
+			y=0
+		},
+		coll={
+			l=0x0.2,
+			r=0x0.e,
+			u=0x0.0,
+			d=0x1.0
+		},
+		sprite = {
+			n = 75,
+			w = 1,
+			h = 1
+		},
+		heavy=true,
+		gravity=true,
+		frict=0x0.e,
+		dropsfx=7,
+		draw = sprite_draw,
+		update = physics,
+		kill = kill_box
+	}
+	create(box,bags)
+	return box
 end
 
 spawnlist[75] = new_box
@@ -1060,24 +1004,24 @@ end
 
 function create_exit_trigger()
 	local box = {
-			x=truckx,
-			y=trucky+2,
-   coll={
- 			l=0x0.0,
- 			r=0x1.0,
- 			u=0x0.0,
- 			d=0x1.0
- 		},
- 		sprite={
- 			n=89,
- 			w=1,
- 			h=1
- 		},
- 		trigger=exit_on_b,
- 		draw=sprite_draw
- }
- create(box,triggers)
- return box
+		x=truckx,
+		y=trucky+2,
+		coll={
+			l=0x0.0,
+			r=0x1.0,
+			u=0x0.0,
+			d=0x1.0
+		},
+		sprite={
+			n=89,
+			w=1,
+			h=1
+		},
+		trigger=exit_on_b,
+		draw=sprite_draw
+	}
+	create(box,triggers)
+	return box
 end
 
 --spawnlist[89]=create_exit_trigger
@@ -1091,17 +1035,17 @@ end
 function create_enter_trigger(level)
 	return function()
 		local box = {
-   coll={
- 			l=0x0.0,
- 			r=0x1.0,
- 			u=0x0.0,
- 			d=0x1.0
- 		},
- 		level=level,
- 		trigger=enter_trigger,
-  }
-  create(box,triggers)
-  return box
+			coll={
+				l=0x0.0,
+				r=0x1.0,
+				u=0x0.0,
+				d=0x1.0
+			},
+			level=level,
+			trigger=enter_trigger,
+		}
+		create(box,triggers)
+		return box
 	end
 end
 
@@ -1117,10 +1061,10 @@ spawnlist[58]=create_enter_trigger(level_data[6])
 -->8
 --collision handlers
 local function shot_enemy(bullet,enemy)
-  if bullet.update==bullet_update then
-  	bullet_impact(bullet)
-  	enemy_die(enemy,bullet.vel)
-  end
+	if bullet.update==bullet_update then
+		bullet_impact(bullet)
+		enemy_die(enemy,bullet.vel)
+	end
 end
 
 local function player_pickup(player,pickup)
@@ -1153,36 +1097,36 @@ local function bag_bag(bag1,bag2)
 					bag1.grounded=false
 					psfx(9,bag1.x,bag1.y)
 				else
- 				if bag1.dropsfx and bag1.vel.y>0x0.2 then
- 					psfx(bag1.dropsfx,bag1.x,bag1.y)
- 				end
+				if bag1.dropsfx and bag1.vel.y>0x0.2 then
+					psfx(bag1.dropsfx,bag1.x,bag1.y)
+				end
 					bag1.vel.y=0
 					bag1.grounded=true
 				end
 			end
 		else
- 		if dx<0 then
-  		if bag1.layer==enemies then
- 				bag1.sprite.fx=true
- 				if(bag1.vel.x>0) bag1.vel.x=0
- 			elseif bag1.vel.x>bag2.vel.x then
- 				bag2.vel.x+=0x0.1
- 				--local temp=bag1.vel.x
- 				--bag1.vel.x=bag2.vel.x
- 				--bag2.vel.x=temp
- 			end
- 		else
- 			if bag1.layer==enemies then
- 				bag1.sprite.fx=false
- 				if(bag1.vel.x<0) bag1.vel.x=0
- 			elseif bag1.vel.x<bag2.vel.x then
- 				bag2.vel.x-=0x0.1
- 				--local temp=bag1.vel.x
- 				--bag1.vel.x=bag2.vel.x
- 				--bag2.vel.x=temp
- 			end
- 		end
- 	end
+			if dx<0 then
+				if bag1.layer==enemies then
+					bag1.sprite.fx=true
+					if(bag1.vel.x>0) bag1.vel.x=0
+				elseif bag1.vel.x>bag2.vel.x then
+					bag2.vel.x+=0x0.1
+					--local temp=bag1.vel.x
+					--bag1.vel.x=bag2.vel.x
+					--bag2.vel.x=temp
+				end
+			else
+				if bag1.layer==enemies then
+					bag1.sprite.fx=false
+					if(bag1.vel.x<0) bag1.vel.x=0
+				elseif bag1.vel.x<bag2.vel.x then
+					bag2.vel.x-=0x0.1
+					--local temp=bag1.vel.x
+					--bag1.vel.x=bag2.vel.x
+					--bag2.vel.x=temp
+				end
+			end
+		end
 	end
 end
 
@@ -1209,12 +1153,12 @@ end
 --wrong place lol
 function text_draw(obj)
 	if obj.bg then
- 	color(obj.bg)
- 	rectfill(obj.x-1,obj.y-1,obj.x+(obj.w*4)-1,obj.y+5)
- end
- color(obj.fg)
- cursor(obj.x,obj.y)
- print(obj.text)
+		color(obj.bg)
+		rectfill(obj.x-1,obj.y-1,obj.x+(obj.w*4)-1,obj.y+5)
+	end
+	color(obj.fg)
+	cursor(obj.x,obj.y)
+	print(obj.text)
 end
 
 function trigger_player(trigger,player)
@@ -1226,81 +1170,82 @@ end
 -->8
 --scripts
 function wait(t)
-  for i=1,t do
-    yield()
-  end
+	for i=1,t do
+		yield()
+	end
 end
 
 function text_box(text,x,y)
-  local obj={
-    x=x,y=y,w=#text,
-    bg=0,fg=7,
-    text=text,
-    draw=text_draw
-  }
-  create(obj,texts)
-  return obj
+	local obj={
+		x=x,y=y,w=#text,
+		bg=0,fg=7,
+		text=text,
+		draw=text_draw
+	}
+	create(obj,texts)
+	return obj
 end
 
 function type_text(obj,text,speed)
-  for p=1,#text do
-  		obj.text=sub(text,1,p)
-    wait(speed)
-  end
+	for p=1,#text do
+		obj.text=sub(text,1,p)
+		wait(speed)
+	end
 end
 
 function death_box()
-		wait(20)
-  local t=text_box("game over",46,54)
-  type_text(t,"game over",5)
-  --destroy(t)
+	wait(20)
+	local t=text_box("game over",46,54)
+	type_text(t,"game over",5)
+	--destroy(t)
 end
 
 function rising_box(text,x,y)
-  return function()
-		  local t=text_box(text,
-		  	x-((#text)*2),
-		  	y-3)
-		  t.bg=false
-		  multitask({function()
-		    type_text(t,text,2)
-		   end,
-		   function()
-		    for i=1,5 do
-			    wait(2)
-			    t.y-=1
-			   end
-			  end
-			 })
-			 wait(20)
-			 destroy(t)
+	return function()
+		local t=text_box(text,
+				x-((#text)*2),
+				y-3)
+		t.bg=false
+		multitask({
+			function()
+				type_text(t,text,2)
+			end,
+			function()
+				for i=1,5 do
+					wait(2)
+					t.y-=1
+				end
+			end
+		})
+		wait(20)
+		destroy(t)
 	 end
 end
 
 function delay_destroy(obj,t)
 	if not obj.destroying then
 		obj.destroying=true
- 	begin_scene(function()
- 		wait(t)
- 		destroy(obj)
- 	end)
- end
+		begin_scene(function()
+			wait(t)
+			destroy(obj)
+		end)
+	end
 end
 
 function delay_respawn(bag,t)
 	if not bag.respawning then
 		bag.respawning=true
- 	begin_scene(function()
- 		wait(t)
- 		if bag.level_owner==current_level and bag.respawn then
-  		bag.x=bag.respawn.x
-  		bag.y=bag.respawn.y
-  	else
-  		destroy(bag)
-  	end
-  	bag.respawning=nil
- 	end)
- end
+		begin_scene(function()
+			wait(t)
+			if bag.level_owner==current_level and bag.respawn then
+				bag.x=bag.respawn.x
+				bag.y=bag.respawn.y
+			else
+				destroy(bag)
+			end
+			bag.respawning=nil
+		end)
+	end
 end
 
 function delay_spawn_player()
@@ -1453,14 +1398,14 @@ function level_enter()
 	end
 
 	begin_scene(function()
- 	truck_enter(1,0)
- 	player_exit_truck()
- 	load_truck()--must do after
- 	menuitem(1,"suicide",player_kill)
+		truck_enter(1,0)
+		player_exit_truck()
+		load_truck()--must do after
+		menuitem(1,"suicide",player_kill)
 
- 	create_exit_trigger()
- end)
- music(0)
+		create_exit_trigger()
+	end)
+	music(0)
 end
 
 function home_enter()
@@ -1474,14 +1419,14 @@ function home_enter()
 		tutorial_text=text_box("store gold",69,36)
 	end
 	begin_scene(function()
- 	truck_enter(1,4)
- 	player_exit_truck()
- 	load_truck()--must do after
+		truck_enter(1,4)
+		player_exit_truck()
+		load_truck()--must do after
 
- 	if tutorial>2 then
- 		create_exit_trigger()
- 	end
- end)
+		if tutorial>2 then
+			create_exit_trigger()
+		end
+	end)
 end
 
 function home_exit()
@@ -1626,92 +1571,92 @@ end
 -->8
 --draw
 function _draw()
- cls()
- --memset(0x6000,0xff,0x2000)
+	cls()
+	--memset(0x6000,0xff,0x2000)
 
 	if not splash then
 
- --gui
-	camera(0,0)
-	clip(0,0,128,16)
-	cursor(0,0)
-	color(8)
-	for i=1,player.health do
-  print("♥",i*6,0)
- end
+		--gui
+		camera(0,0)
+		clip(0,0,128,16)
+		cursor(0,0)
+		color(8)
+		for i=1,player.health do
+			print("♥",i*6,0)
+		end
 
- if tutorial>2 then
- 	color(6)
-  print("bags in storage:",1,8)
-  color(9)
- 	print(number_of_bags,65,8)
- 	print("/17",73,8)
- end
- if deaths>0 then
- 	color(6)
- 	print("deaths:",90,8)
-  color(8)
- 	print(deaths,118,8)
- end
+		if tutorial>2 then
+			color(6)
+			print("bags in storage:",1,8)
+			color(9)
+			print(number_of_bags,65,8)
+			print("/17",73,8)
+		end
+		if deaths>0 then
+			color(6)
+			print("deaths:",90,8)
+		color(8)
+			print(deaths,118,8)
+		end
 
- clip(0,112,128,16)
+		clip(0,112,128,16)
 
- if tutorial>3 then
-  color(10)
- 	print("find gold!",0,115)
- 	color(6)
- 	print("by isogash - ludum dare 40",0,122)
+		if tutorial>3 then
+		color(10)
+			print("find gold!",0,115)
+			color(6)
+			print("by isogash - ludum dare 40",0,122)
+		end
+
+		do
+			local i=81
+			if(btn(0)) color(7) else color(5)
+			print("⬅️",i,114)
+			if(btn(3)) color(7) else color(5)
+			print("⬇️",i+8,114)
+			if(btn(2)) color(7) else color(5)
+			print("⬆️",i+16,114)
+			if(btn(1)) color(7) else color(5)
+			print("➡️",i+24,114)
+			if(btn(4)) color(7) else color(5)
+			print("🅾️",i+32,114)
+			if(btn(5)) color(7) else color(5)
+			print("❎",i+40,114)
+		end
+
+
+		--level
+		clip(0,16,128,96)
+
+		--shake
+		acamx,acamy=shake_camera(camx,camy)
+
+		--light
+		light_pal()
+
+		--draw layers
+		for i=0,levelh-1 do
+			local ly=(level+i)%5
+			local lx=flr((level+i)/5)
+			map(lx*16,ly*12,0,i*96,16,12,0x80)
+		end
+		for layer in all(layers) do
+			draw(layer)
+		end
+		for i=0,levelh-1 do
+			local ly=(level+i)%5
+			local lx=flr((level+i)/5)
+			map(lx*16,ly*12,0,i*96,16,12,0x40)
+		end
+
+		camera(acamx-(truckx*8),acamy-(trucky*8))
+		draw(truck)
+		spr(12,0,24,4,2)
+
+	else
+		camera()
+		clip()
+		map(112,48,0,0,16,16)
+		print("press ❎",48,116)
 	end
-
-	do
-		local i=81
- 	if(btn(0)) color(7) else color(5)
- 	print("⬅️",i,114)
- 	if(btn(3)) color(7) else color(5)
- 	print("⬇️",i+8,114)
- 	if(btn(2)) color(7) else color(5)
- 	print("⬆️",i+16,114)
- 	if(btn(1)) color(7) else color(5)
- 	print("➡️",i+24,114)
- 	if(btn(4)) color(7) else color(5)
- 	print("🅾️",i+32,114)
- 	if(btn(5)) color(7) else color(5)
- 	print("❎",i+40,114)
- end
-
-
-	--level
-	clip(0,16,128,96)
-
-	--shake
-	acamx,acamy=shake_camera(camx,camy)
-
-	--light
-	light_pal()
-
-  --draw layers
-  for i=0,levelh-1 do
-  	local ly=(level+i)%5
-  	local lx=flr((level+i)/5)
-  	map(lx*16,ly*12,0,i*96,16,12,0x80)
-  end
- 	for layer in all(layers) do
- 		draw(layer)
- 	end
- 	for i=0,levelh-1 do
- 		local ly=(level+i)%5
-  	local lx=flr((level+i)/5)
-  	map(lx*16,ly*12,0,i*96,16,12,0x40)
-  end
-
-  camera(acamx-(truckx*8),acamy-(trucky*8))
-  draw(truck)
-  spr(12,0,24,4,2)
-
- else
- 	camera()
- 	clip()
- 	map(112,48,0,0,16,16)
- 	print("press ❎",48,116)
- end
 end

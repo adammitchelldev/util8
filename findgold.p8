@@ -8,6 +8,8 @@ __lua__
 #include engine/fx/light.lua
 #include engine/fx/shake.lua
 #include engine/director.lua
+#include engine/level.lua
+#include engine/main.lua
 
 #include findgold.lua
 
